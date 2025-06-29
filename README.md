@@ -1,5 +1,4 @@
 # customer-service-api
-# customer-service-api
 
 # 📱 Customer Service REST API (Spring Boot)
 
