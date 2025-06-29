@@ -2,13 +2,14 @@ package dk.dev.app.dao.impl;
 
 import dk.dev.app.dao.CustomerDAO;
 import dk.dev.app.model.Customer;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
+@Repository
 public class CustomerInMemoryDao implements CustomerDAO {
 
 
