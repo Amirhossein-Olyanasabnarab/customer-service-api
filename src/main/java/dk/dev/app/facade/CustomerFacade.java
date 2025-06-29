@@ -12,24 +12,24 @@ import java.util.List;
 @Component
 public class CustomerFacade {
     private final CustomerService customerService;
-    private final CustomerMapper customerMapper;
+    private final CustomerMapper mapper;
 
     @Autowired
-    public CustomerFacade(CustomerService customerService, CustomerMapper customerMapper) {
+    public CustomerFacade(CustomerService customerService, CustomerMapper mapper) {
         this.customerService = customerService;
-        this.customerMapper = customerMapper;
+        this.mapper = mapper;
     }
 
     public CustomerDto addCustomer(CustomerDto customerDto) {
-        Customer entity = customerMapper.toEntity(customerDto);
+        Customer entity = mapper.toEntity(customerDto);
         entity = customerService.addCustomer(entity);
-        return customerMapper.toDto(entity);
+        return mapper.toDto(entity);
     }
 
     public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
-        Customer entity = customerMapper.toEntity(customerDto);
+        Customer entity = mapper.toEntity(customerDto);
         entity = customerService.updateCustomer(id, entity);
-        return entity != null ? customerMapper.toDto(entity) : null;
+        return entity != null ? mapper.toDto(entity) : null;
     }
 
     public Boolean deleteCustomer(Long id) {
@@ -38,13 +38,13 @@ public class CustomerFacade {
 
     public CustomerDto getCustomerById(Long id) {
         Customer entity = customerService.getCustomerById(id);
-        return entity != null ? customerMapper.toDto(entity) : null;
+        return entity != null ? mapper.toDto(entity) : null;
     }
 
     public List<CustomerDto> getAllCustomers() {
         return customerService.getAllCustomers()
                 .stream()
-                .map(customerMapper::toDto)
+                .map(mapper::toDto)
                 .toList();
     }
 }
