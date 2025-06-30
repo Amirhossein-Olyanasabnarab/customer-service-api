@@ -78,7 +78,39 @@ public class CustomerH2Dao implements CustomerDAO {
 
     @Override
     public Customer findById(Long id) {
-        return null;
+        String customerSql = "SELECT * FROM customer WHERE id = ?";
+        Map<String, Object> customerRow = jdbc.queryForMap(customerSql, id);
+
+        CustomerType type = CustomerType.valueOf((String) customerRow.get("type"));
+        Customer customer;
+
+        if (type == CustomerType.REAL) {
+            String realCustomerSql = "SELECT * FROM real_customer WHERE id = ?";
+            Map<String, Object> realCustomerRow = jdbc.queryForMap(realCustomerSql, id);
+            customer = RealCustomer.builder()
+                    .id(id)
+                    .fullName((String) customerRow.get("full_name"))
+                    .phoneNumber((String) customerRow.get("phone_number"))
+                    .email((String) customerRow.get("email"))
+                    .type(type)
+                    .nationality((String) realCustomerRow.get("nationality"))
+                    .age((String) realCustomerRow.get("age"))
+                    .build();
+        } else {
+            String legalCustomerSql = "SELECT * FROM legal_customer WHERE id = ?";
+            Map<String, Object> legalCustomerRow = jdbc.queryForMap(legalCustomerSql, id);
+            customer = LegalCustomer.builder()
+                    .id(id)
+                    .fullName((String) customerRow.get("full_name"))
+                    .phoneNumber((String) customerRow.get("phone_number"))
+                    .email((String) customerRow.get("email"))
+                    .type(type)
+                    .companyName((String) legalCustomerRow.get("company_name"))
+                    .industry((String) legalCustomerRow.get("industry"))
+                    .build();
+        }
+
+        return customer;
     }
 
     @Override
