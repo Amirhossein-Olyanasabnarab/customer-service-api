@@ -70,7 +70,8 @@ public class CustomerH2Dao implements CustomerDAO {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String customerSql = "DELETE FROM customer WHERE id = ?";
+        return jdbc.update(customerSql, id) > 0;
     }
 
     @Override
@@ -85,6 +86,8 @@ public class CustomerH2Dao implements CustomerDAO {
 
     @Override
     public boolean existsById(Long id) {
-        return false;
+        String customerSql = "SELECT COUNT(*) FROM customer WHERE id = ?";
+        Integer count = jdbc.queryForObject(customerSql, Integer.class, id);
+        return count != null && count > 0;
     }
 }
