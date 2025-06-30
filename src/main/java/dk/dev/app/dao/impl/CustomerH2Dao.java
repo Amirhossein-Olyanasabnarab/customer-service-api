@@ -1,6 +1,7 @@
 package dk.dev.app.dao.impl;
 
 import dk.dev.app.dao.CustomerDAO;
+import dk.dev.app.enums.CustomerType;
 import dk.dev.app.model.Customer;
 import dk.dev.app.model.LegalCustomer;
 import dk.dev.app.model.RealCustomer;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Primary
@@ -81,7 +83,37 @@ public class CustomerH2Dao implements CustomerDAO {
 
     @Override
     public List<Customer> findAll() {
-        return List.of();
+        String customerSql = "SELECT * FROM customer";
+        return jdbc.query(customerSql, (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            CustomerType type = CustomerType.valueOf(rs.getString("type"));
+
+            if (type == CustomerType.REAL) {
+                String realCustomerSql = "SELECT * FROM real_customer WHERE id = ?";
+                Map<String, Object> realCustomerRow = jdbc.queryForMap(realCustomerSql, id);
+                return RealCustomer.builder()
+                        .id(id)
+                        .fullName(rs.getString("full_name"))
+                        .phoneNumber(rs.getString("phone_number"))
+                        .email(rs.getString("email"))
+                        .type(type)
+                        .nationality((String) realCustomerRow.get("nationality"))
+                        .age((String) realCustomerRow.get("age"))
+                        .build();
+            } else {
+                String legalCustomerSql = "SELECT * FROM legal_customer WHERE id = ?";
+                Map<String, Object> legalCustomerRow = jdbc.queryForMap(legalCustomerSql, id);
+                return LegalCustomer.builder()
+                        .id(id)
+                        .fullName(rs.getString("full_name"))
+                        .phoneNumber(rs.getString("phone_number"))
+                        .email(rs.getString("email"))
+                        .type(type)
+                        .companyName((String) legalCustomerRow.get("company_name"))
+                        .industry((String) legalCustomerRow.get("industry"))
+                        .build();
+            }
+        });
     }
 
     @Override
