@@ -10,27 +10,31 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
+
+
     RealCustomer toEntity(RealCustomerDto dto);
+
     RealCustomerDto toDto(RealCustomer entity);
 
     LegalCustomer toEntity(LegalCustomerDto dto);
+
     LegalCustomerDto toDto(LegalCustomer entity);
 
-    default Customer toEntity(Object dto){
-        if(dto instanceof RealCustomerDto){
+    default Customer toEntity(Object dto) {
+        if (dto instanceof RealCustomerDto) {
             return toEntity((RealCustomerDto) dto);
-        }else if(dto instanceof LegalCustomerDto){
+        } else if (dto instanceof LegalCustomerDto) {
             return toEntity((LegalCustomerDto) dto);
         }
-        throw new IllegalArgumentException("Cannot convert " + dto + " to RealCustomerDto");
+        throw new IllegalArgumentException("Unsupported DTO type: " + dto.getClass());
     }
 
-    default CustomerDto toDto(Customer entity){
-        if(entity instanceof RealCustomer){
+    default CustomerDto toDto(Customer entity) {
+        if (entity instanceof RealCustomer) {
             return toDto((RealCustomer) entity);
-        }else if(entity instanceof LegalCustomer){
+        } else if (entity instanceof LegalCustomer) {
             return toDto((LegalCustomer) entity);
         }
-        throw new IllegalArgumentException("Cannot convert " + entity + " to RealCustomerDto");
+        throw new IllegalArgumentException("Unsupported entity type: " + entity.getClass());
     }
 }

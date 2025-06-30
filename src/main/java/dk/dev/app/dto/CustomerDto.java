@@ -10,8 +10,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RealCustomerDto.class, name = "REAL"),
+        @JsonSubTypes.Type(value = LegalCustomerDto.class, name = "LEGAL")
+})
 
 @Schema(description = "Customer entity representing a customer")
 @Getter
@@ -20,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class CustomerDto {
+
     @Schema(description = "Unique identifier for the customer", example = "1")
     private Long id;
     @Schema(description = "First name & Last name of customer", example = "John Doe")
