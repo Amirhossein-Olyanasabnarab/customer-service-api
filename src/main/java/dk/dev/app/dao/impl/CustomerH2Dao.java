@@ -54,7 +54,18 @@ public class CustomerH2Dao implements CustomerDAO {
 
     @Override
     public Customer update(Long id, Customer customer) {
-        return null;
+        String customerSql = "UPDATE customer SET full_name = ?, phone_number = ?, email = ?, type = ? WHERE id = ?";
+        jdbc.update(customerSql, customer.getFullName(), customer.getPhoneNumber(),customer.getEmail(),
+                customer.getType().name(), id);
+
+        if (customer instanceof RealCustomer realCustomer) {
+            String realCustomerSql = "UPDATE real_customer SET nationality = ?, age = ? WHERE id = ?";
+            jdbc.update(realCustomerSql, realCustomer.getNationality(), realCustomer.getAge(), id);
+        } else if (customer instanceof LegalCustomer legalCustomer) {
+            String legalCustomerSql = "UPDATE legal_customer SET company_name = ?, industry = ? WHERE id = ?";
+            jdbc.update(legalCustomerSql, legalCustomer.getCompanyName(), legalCustomer.getIndustry(), id);
+        }
+        return customer;
     }
 
     @Override
