@@ -12,9 +12,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 public class RealCustomerDto extends CustomerDto {
-    //@Schema(description = "Nationality of customer", example = "UK")
+
+    @Schema(description = "Nationality of customer", example = "UK")
     private String nationality;
-   // @Schema(description = "Age of customer", example = "43")
+    @Schema(description = "Age of customer", example = "43")
     private String age;
 
     public RealCustomerDto() {
