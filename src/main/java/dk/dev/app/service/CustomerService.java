@@ -32,7 +32,7 @@ public class CustomerService {
 
     public boolean deleteCustomer(Long id) {
         if (customerDAO.existsById(id)) {
-            customerDAO.delete(id);
+            customerDAO.deleteById(id);
             return true;
         }else
             return false;

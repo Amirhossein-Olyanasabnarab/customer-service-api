@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CustomerDAO {
     Customer save(Customer customer);
-    void delete(Long id);
+    void deleteById(Long id);
     Optional<Customer> findById(Long id);
     List<Customer> findAll();
     boolean existsById(Long id);

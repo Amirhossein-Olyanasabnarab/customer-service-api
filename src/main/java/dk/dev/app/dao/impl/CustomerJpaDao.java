@@ -26,7 +26,7 @@ public class CustomerJpaDao implements CustomerDAO {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 

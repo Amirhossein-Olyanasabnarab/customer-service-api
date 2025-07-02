@@ -28,7 +28,7 @@ public class CustomerInMemoryDao implements CustomerDAO {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         customers.remove(id);
     }
 
