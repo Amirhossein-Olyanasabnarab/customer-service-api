@@ -25,11 +25,6 @@ public class CustomerJpaDao implements CustomerDAO {
     }
 
     @Override
-    public Customer update(Customer customer) {
-        return repository.save(customer);
-    }
-
-    @Override
     public boolean delete(Long id) {
         if(!existsById(id))
             return false;

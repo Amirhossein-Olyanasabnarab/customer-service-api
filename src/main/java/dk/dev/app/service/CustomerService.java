@@ -18,13 +18,13 @@ public class CustomerService {
     }
 
     public Customer addCustomer(Customer customer) {
-        return customerDAO.save(customer);
+        return customerDAO. save(customer);
     }
 
     public Customer updateCustomer(Long id, Customer customer) {
         if (customerDAO.existsById(id)) {
             customer.setId(id);
-            return customerDAO.update(customer);
+            return customerDAO.save(customer);
         }else
             return null;
     }

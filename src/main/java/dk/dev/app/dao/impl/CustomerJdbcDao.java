@@ -26,8 +26,16 @@ public class CustomerJdbcDao implements CustomerDAO {
         this.jdbc = jdbc;
     }
 
-    @Override
     public Customer save(Customer customer) {
+        if (existsById(customer.getId())) {
+            return update(customer);
+        }else {
+            return insert(customer);
+        }
+    }
+
+
+    private Customer insert(Customer customer) {
         String customerSql = "INSERT INTO customer (full_name, phone_number, email, type) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
@@ -53,8 +61,8 @@ public class CustomerJdbcDao implements CustomerDAO {
         return customer;
     }
 
-    @Override
-    public Customer update(Customer customer) {
+
+    private Customer update(Customer customer) {
         String customerSql = "UPDATE customer SET full_name = ?, phone_number = ?, email = ?, type = ? WHERE id = ?";
         jdbc.update(customerSql, customer.getFullName(), customer.getPhoneNumber(),customer.getEmail(),
                 customer.getType().name(), customer.getId());
