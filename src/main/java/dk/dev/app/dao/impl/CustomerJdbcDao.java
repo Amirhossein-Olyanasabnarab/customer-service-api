@@ -18,12 +18,12 @@ import java.util.Map;
 
 @Repository
 @Primary
-public class CustomerH2Dao implements CustomerDAO {
+public class CustomerJdbcDao implements CustomerDAO {
 
 
     private final JdbcTemplate jdbc;
     @Autowired
-    public CustomerH2Dao(JdbcTemplate jdbc) {
+    public CustomerJdbcDao(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
