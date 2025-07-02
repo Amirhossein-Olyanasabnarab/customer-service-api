@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -30,9 +31,8 @@ public class CustomerJpaDao implements CustomerDAO {
     }
 
     @Override
-    public Customer findById(Long id) {
-        return repository.findById(id)
-                .orElse(null);
+    public Optional<Customer> findById(Long id) {
+        return repository.findById(id);
     }
 
     @Override

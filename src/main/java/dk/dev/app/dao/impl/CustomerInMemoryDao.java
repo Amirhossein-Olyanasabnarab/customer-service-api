@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -32,8 +33,11 @@ public class CustomerInMemoryDao implements CustomerDAO {
     }
 
     @Override
-    public Customer findById(Long id) {
-        return customers.get(id);
+    public Optional<Customer> findById(Long id) {
+      if (!existsById(id)) {
+          return Optional.empty();
+      }
+      return Optional.of(customers.get(id));
     }
 
     @Override

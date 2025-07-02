@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CustomerFacade {
@@ -39,8 +40,8 @@ public class CustomerFacade {
     }
 
     public CustomerDto getCustomerById(Long id) {
-        Customer entity = customerService.getCustomerById(id);
-        return entity != null ? customerMapper.toDto(entity) : null;
+        Optional<Customer> entity = customerService.getCustomerById(id);
+        return entity.isPresent() ? customerMapper.toDto(entity.get()) : null;
     }
 
     public List<CustomerDto> getAllCustomers() {

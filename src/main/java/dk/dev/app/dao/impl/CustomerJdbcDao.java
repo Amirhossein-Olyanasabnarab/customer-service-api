@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 //@Primary
@@ -80,11 +81,16 @@ public class CustomerJdbcDao implements CustomerDAO {
     @Override
     public void delete(Long id) {
         String customerSql = "DELETE FROM customer WHERE id = ?";
-        jdbc.update(customerSql, id);
+        jdbc.update(customerSql, id) ;
     }
 
     @Override
-    public Customer findById(Long id) {
+    public Optional<Customer> findById(Long id) {
+
+        if (!existsById(id)) {
+            return Optional.empty();
+        }
+
         String customerSql = "SELECT * FROM customer WHERE id = ?";
         Map<String, Object> customerRow = jdbc.queryForMap(customerSql, id);
 
@@ -117,7 +123,7 @@ public class CustomerJdbcDao implements CustomerDAO {
                     .build();
         }
 
-        return customer;
+        return Optional.of(customer);
     }
 
     @Override
