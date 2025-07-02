@@ -54,10 +54,11 @@ public class CustomerInMemoryDao implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> findByName(String name) {
+    public List<Customer> findByFullName(String fullName) {
         return customers.values().stream()
                 .filter(customer -> customer.getFullName() != null &&
-                        customer.getFullName().equalsIgnoreCase(name))
+                        customer.getFullName().equalsIgnoreCase(fullName))
                 .toList();
     }
+
 }

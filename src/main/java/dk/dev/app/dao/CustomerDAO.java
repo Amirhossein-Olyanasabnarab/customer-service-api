@@ -11,5 +11,6 @@ public interface CustomerDAO {
     Optional<Customer> findById(Long id);
     List<Customer> findAll();
     boolean existsById(Long id);
-    List<Customer> findByName(String name);
+    List<Customer> findByFullName(String fullName);
+
 }

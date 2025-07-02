@@ -45,4 +45,9 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerDAO.findAll();
     }
-}
+
+    public List<Customer> getCustomerByFullName(String fullName) {
+        return customerDAO.findByFullName(fullName);
+    }
+
+ }

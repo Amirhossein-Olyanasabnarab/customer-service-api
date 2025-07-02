@@ -170,7 +170,7 @@ public class CustomerJdbcDao implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> findByName(String name) {
+    public List<Customer> findByFullName(String fullName) {
         String customerSql = "SELECT * FROM customer WHERE LOWER(name) = LOWER(?)";
         return jdbc.query(customerSql, (rs, rowNum) -> {
             Long id = rs.getLong("id");
@@ -201,6 +201,7 @@ public class CustomerJdbcDao implements CustomerDAO {
                         .industry((String) legalCustomerRow.get("industry"))
                         .build();
             }
-        }, name);
+        }, fullName);
     }
+
 }

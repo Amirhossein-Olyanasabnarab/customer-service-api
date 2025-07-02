@@ -6,4 +6,5 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
 @Primary
 public interface CustomerJpaDao extends JpaRepository<Customer, Long>, CustomerDAO {
+
 }

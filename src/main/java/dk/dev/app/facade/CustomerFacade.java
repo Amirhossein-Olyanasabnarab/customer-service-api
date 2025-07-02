@@ -50,4 +50,13 @@ public class CustomerFacade {
                 .map(customerMapper::toDto)
                 .toList();
     }
+
+    public List<CustomerDto> getCustomerByFullName(String fullName) {
+        return customerService.getCustomerByFullName(fullName)
+                .stream()
+                .map(customerMapper::toDto)
+                .toList();
+    }
+
+
 }

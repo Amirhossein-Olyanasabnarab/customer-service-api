@@ -98,7 +98,7 @@ public class CustomerController {
 
     }
 
-
+    @Operation(summary = "update a new customer", description = "update customer")
     @PutMapping("/{id}")
     public CustomerDto updateCustomer(@PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -143,4 +143,12 @@ public class CustomerController {
     {
         return facade.updateCustomer(id, customerDto);
     }
+
+    @Operation(summary = "Search customers by full name", description = "search customers by full name")
+    @GetMapping("/{fullName}")
+    public List<CustomerDto> getCustomerByFullName(@PathVariable("fullName") String fullName) {
+        return facade.getCustomerByFullName(fullName);
+    }
+
+
 }
