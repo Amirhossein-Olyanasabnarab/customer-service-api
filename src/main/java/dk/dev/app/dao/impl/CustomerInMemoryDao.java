@@ -19,14 +19,9 @@ public class CustomerInMemoryDao implements CustomerDAO {
 
     @Override
     public Customer save(Customer customer) {
-        Long id = customerId.incrementAndGet();
-        customer.setId(id);
-        customers.put(id, customer);
-        return customer;
-    }
-
-    @Override
-    public Customer update(Customer customer) {
+        if(!existsById(customer.getId())) {
+            customer.setId(customerId.incrementAndGet());
+        }
         customers.put(customer.getId(), customer);
         return customer;
     }
