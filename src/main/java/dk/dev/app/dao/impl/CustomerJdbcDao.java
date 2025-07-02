@@ -6,7 +6,6 @@ import dk.dev.app.model.Customer;
 import dk.dev.app.model.LegalCustomer;
 import dk.dev.app.model.RealCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -55,17 +54,17 @@ public class CustomerJdbcDao implements CustomerDAO {
     }
 
     @Override
-    public Customer update(Long id, Customer customer) {
+    public Customer update(Customer customer) {
         String customerSql = "UPDATE customer SET full_name = ?, phone_number = ?, email = ?, type = ? WHERE id = ?";
         jdbc.update(customerSql, customer.getFullName(), customer.getPhoneNumber(),customer.getEmail(),
-                customer.getType().name(), id);
+                customer.getType().name(), customer.getId());
 
         if (customer instanceof RealCustomer realCustomer) {
             String realCustomerSql = "UPDATE real_customer SET nationality = ?, age = ? WHERE id = ?";
-            jdbc.update(realCustomerSql, realCustomer.getNationality(), realCustomer.getAge(), id);
+            jdbc.update(realCustomerSql, realCustomer.getNationality(), realCustomer.getAge(), customer.getId());
         } else if (customer instanceof LegalCustomer legalCustomer) {
             String legalCustomerSql = "UPDATE legal_customer SET company_name = ?, industry = ? WHERE id = ?";
-            jdbc.update(legalCustomerSql, legalCustomer.getCompanyName(), legalCustomer.getIndustry(), id);
+            jdbc.update(legalCustomerSql, legalCustomer.getCompanyName(), legalCustomer.getIndustry(), customer.getId());
         }
         return customer;
     }

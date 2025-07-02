@@ -23,7 +23,8 @@ public class CustomerService {
 
     public Customer updateCustomer(Long id, Customer customer) {
         if (customerDAO.existsById(id)) {
-            return customerDAO.update(id, customer);
+            customer.setId(id);
+            return customerDAO.update(customer);
         }else
             return null;
     }

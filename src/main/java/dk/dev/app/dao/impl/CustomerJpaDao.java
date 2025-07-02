@@ -25,8 +25,7 @@ public class CustomerJpaDao implements CustomerDAO {
     }
 
     @Override
-    public Customer update(Long id, Customer customer) {
-        customer.setId(id);
+    public Customer update(Customer customer) {
         return repository.save(customer);
     }
 

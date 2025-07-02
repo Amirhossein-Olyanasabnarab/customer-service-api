@@ -2,7 +2,6 @@ package dk.dev.app.dao.impl;
 
 import dk.dev.app.dao.CustomerDAO;
 import dk.dev.app.model.Customer;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,9 +26,8 @@ public class CustomerInMemoryDao implements CustomerDAO {
     }
 
     @Override
-    public Customer update(Long id, Customer customer) {
-        customer.setId(id);
-        customers.put(id, customer);
+    public Customer update(Customer customer) {
+        customers.put(customer.getId(), customer);
         return customer;
     }
 

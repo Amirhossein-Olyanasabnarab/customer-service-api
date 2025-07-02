@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CustomerDAO {
     Customer save(Customer customer);
-    Customer update(Long id, Customer customer);
+    Customer update(Customer customer);
     boolean delete(Long id);
     Customer findById(Long id);
     List<Customer> findAll();
