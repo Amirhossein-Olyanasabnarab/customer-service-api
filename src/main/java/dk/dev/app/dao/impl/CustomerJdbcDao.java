@@ -78,9 +78,9 @@ public class CustomerJdbcDao implements CustomerDAO {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         String customerSql = "DELETE FROM customer WHERE id = ?";
-        return jdbc.update(customerSql, id) > 0;
+        jdbc.update(customerSql, id);
     }
 
     @Override

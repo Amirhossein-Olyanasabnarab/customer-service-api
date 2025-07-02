@@ -27,8 +27,8 @@ public class CustomerInMemoryDao implements CustomerDAO {
     }
 
     @Override
-    public boolean delete(Long id) {
-        return customers.remove(id) != null;
+    public void delete(Long id) {
+        customers.remove(id);
     }
 
     @Override
