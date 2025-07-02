@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Primary
+//@Primary
 public class CustomerJdbcDao implements CustomerDAO {
 
 
