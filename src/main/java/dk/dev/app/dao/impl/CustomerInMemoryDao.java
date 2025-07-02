@@ -20,7 +20,7 @@ public class CustomerInMemoryDao implements CustomerDAO {
 
     @Override
     public Customer save(Customer customer) {
-        if(!existsById(customer.getId())) {
+        if (!existsById(customer.getId())) {
             customer.setId(customerId.incrementAndGet());
         }
         customers.put(customer.getId(), customer);
@@ -34,10 +34,10 @@ public class CustomerInMemoryDao implements CustomerDAO {
 
     @Override
     public Optional<Customer> findById(Long id) {
-      if (!existsById(id)) {
-          return Optional.empty();
-      }
-      return Optional.of(customers.get(id));
+        if (!existsById(id)) {
+            return Optional.empty();
+        }
+        return Optional.of(customers.get(id));
     }
 
     @Override
@@ -51,5 +51,13 @@ public class CustomerInMemoryDao implements CustomerDAO {
             return false;
         }
         return customers.containsKey(id);
+    }
+
+    @Override
+    public List<Customer> findByName(String name) {
+        return customers.values().stream()
+                .filter(customer -> customer.getFullName() != null &&
+                        customer.getFullName().equalsIgnoreCase(name))
+                .toList();
     }
 }

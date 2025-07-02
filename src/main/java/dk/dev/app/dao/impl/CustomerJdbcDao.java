@@ -22,6 +22,7 @@ public class CustomerJdbcDao implements CustomerDAO {
 
 
     private final JdbcTemplate jdbc;
+
     @Autowired
     public CustomerJdbcDao(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
@@ -30,7 +31,7 @@ public class CustomerJdbcDao implements CustomerDAO {
     public Customer save(Customer customer) {
         if (existsById(customer.getId())) {
             return update(customer);
-        }else {
+        } else {
             return insert(customer);
         }
     }
@@ -65,7 +66,7 @@ public class CustomerJdbcDao implements CustomerDAO {
 
     private Customer update(Customer customer) {
         String customerSql = "UPDATE customer SET full_name = ?, phone_number = ?, email = ?, type = ? WHERE id = ?";
-        jdbc.update(customerSql, customer.getFullName(), customer.getPhoneNumber(),customer.getEmail(),
+        jdbc.update(customerSql, customer.getFullName(), customer.getPhoneNumber(), customer.getEmail(),
                 customer.getType().name(), customer.getId());
 
         if (customer instanceof RealCustomer realCustomer) {
@@ -81,7 +82,7 @@ public class CustomerJdbcDao implements CustomerDAO {
     @Override
     public void deleteById(Long id) {
         String customerSql = "DELETE FROM customer WHERE id = ?";
-        jdbc.update(customerSql, id) ;
+        jdbc.update(customerSql, id);
     }
 
     @Override
@@ -166,5 +167,40 @@ public class CustomerJdbcDao implements CustomerDAO {
         String customerSql = "SELECT COUNT(*) FROM customer WHERE id = ?";
         Integer count = jdbc.queryForObject(customerSql, Integer.class, id);
         return count != null && count > 0;
+    }
+
+    @Override
+    public List<Customer> findByName(String name) {
+        String customerSql = "SELECT * FROM customer WHERE LOWER(name) = LOWER(?)";
+        return jdbc.query(customerSql, (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            CustomerType type = CustomerType.valueOf(rs.getString("type"));
+
+            if (type == CustomerType.REAL) {
+                String realCustomerSql = "SELECT * FROM real_customer WHERE id = ?";
+                Map<String, Object> realCustomerRow = jdbc.queryForMap(realCustomerSql, id);
+                return RealCustomer.builder()
+                        .id(id)
+                        .fullName(rs.getString("full_name"))
+                        .phoneNumber(rs.getString("phone_number"))
+                        .email(rs.getString("email"))
+                        .type(type)
+                        .nationality((String) realCustomerRow.get("nationality"))
+                        .age((String) realCustomerRow.get("age"))
+                        .build();
+            } else {
+                String legalCustomerSql = "SELECT * FROM legal_customer WHERE id = ?";
+                Map<String, Object> legalCustomerRow = jdbc.queryForMap(legalCustomerSql, id);
+                return LegalCustomer.builder()
+                        .id(id)
+                        .fullName(rs.getString("full_name"))
+                        .phoneNumber(rs.getString("phone_number"))
+                        .email(rs.getString("email"))
+                        .type(type)
+                        .companyName((String) legalCustomerRow.get("company_name"))
+                        .industry((String) legalCustomerRow.get("industry"))
+                        .build();
+            }
+        }, name);
     }
 }
